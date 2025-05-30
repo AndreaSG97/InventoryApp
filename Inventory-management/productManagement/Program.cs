@@ -111,38 +111,29 @@ app.MapPut("/products/{id}", async (HttpRequest request, DataContext context, in
     var category = form["category"];
     var price = decimal.TryParse(form["price"], out var p) ? p : 0;
     var inStock = int.TryParse(form["inStock"], out var s) ? s : 0;
-     var file = form.Files["image"];
 
-    if (file is null || file.Length == 0)
-        return Results.BadRequest("No image uploaded.");
+    var file = form.Files["image"];
+    var existingImagePath = form["existingImagePath"].ToString();
 
-    var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-       Console.WriteLine($"FILE: {JsonSerializer.Serialize(file)}");
-     
-    var savePath = Path.Combine("wwwroot/images", fileName);
-    Console.WriteLine("Ruta absoluta de guardado: " + Path.GetFullPath(savePath));
-
-    Directory.CreateDirectory("wwwroot/images"); 
-
-   try
+    if (file is not null && file.Length > 0)
     {
+        var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+        var savePath = Path.Combine("wwwroot/images", fileName);
+        Directory.CreateDirectory("wwwroot/images");
         using var stream = new FileStream(savePath, FileMode.Create);
         await file.CopyToAsync(stream);
+        product.Image = $"/images/{fileName}";
     }
-    catch (Exception ex)
+    else if (!string.IsNullOrEmpty(existingImagePath))
     {
-        Console.WriteLine("Error al guardar la imagen: " + ex.Message);
-        return Results.Problem("No se pudo guardar la imagen.");
-    }   
+        product.Image = existingImagePath;
+    }
 
-
-    
     product.Name = name;
     product.Description = description;
     product.Category = category;
     product.Price = price;
     product.InStock = inStock;
-    product.Image = $"/images/{fileName}";
 
     await context.SaveChangesAsync();
 
@@ -183,7 +174,7 @@ app.MapPut("/products/{id}/adjust-stock", async (DataContext context, int id, Ad
     }
     else
     {
-        return Results.BadRequest("Operación no válida. Use 'venta' o 'compra'.");
+        return Results.BadRequest("Invalid transaction. Use 'sell' or 'buy'.");
     }
 
     await context.SaveChangesAsync();

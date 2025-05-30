@@ -1,6 +1,16 @@
-version: '3.7'
 
 services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=TuPassword123!
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+      
   service1:
     image: transactionmanagement
     build:
@@ -18,3 +28,5 @@ services:
       - 5200:80
     volumes:
     - ./productManagement/wwwroot/images:/app/wwwroot/images
+volumes:
+  sql_data:

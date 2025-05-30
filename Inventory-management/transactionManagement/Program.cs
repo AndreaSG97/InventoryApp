@@ -146,15 +146,15 @@ app.MapPost("/transactions", async (DataContext context, Transaction transaction
     
     var productResponse = await httpClient.GetAsync($"http://service2:80/products/{transaction.ProductID}");
     if (!productResponse.IsSuccessStatusCode)
-        return Results.BadRequest("Producto no encontrado");
+        return Results.BadRequest("Product not found");
 
     var product = await productResponse.Content.ReadFromJsonAsync<Product>();
     if (product == null)
-        return Results.BadRequest("Error al obtener el producto");
+        return Results.BadRequest("Error getting the product");
 
    
     if (transaction.TransactionType.ToLower() == "sale" && product.InStock < transaction.Quantity)
-        return Results.BadRequest("Stock insuficiente para realizar la venta");
+        return Results.BadRequest("Insufficient stock to make the sale");
     
     var adjustStockPayload = new AdjustStockRequest
     {
@@ -189,15 +189,15 @@ app.MapPut("/transactions/{id}", async (DataContext context, int id, Transaction
     
     var productResponse = await httpClient.GetAsync($"http://service2:80/products/{input.ProductID}");
     if (!productResponse.IsSuccessStatusCode)
-        return Results.BadRequest("Producto no encontrado");
+        return Results.BadRequest("Product not found");
 
     var product = await productResponse.Content.ReadFromJsonAsync<Product>();
     if (product == null)
-        return Results.BadRequest("Error al obtener el producto");
+        return Results.BadRequest("Error getting the product");
 
     
     if (input.TransactionType.ToLower() == "sale" && product.InStock < input.Quantity)
-        return Results.BadRequest("Stock insuficiente para realizar la venta");
+        return Results.BadRequest("Insufficient stock to make the sale");
 
    
     var adjustStockPayload = new AdjustStockRequest

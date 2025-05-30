@@ -68,9 +68,11 @@ export class ProductFormComponent {
     formData.append('category', this.productForm.get('category')?.value);
     formData.append('price', this.productForm.get('price')?.value);
     formData.append('inStock', this.productForm.get('inStock')?.value);
-
+debugger
     if (this.selectedFile) {
       formData.append('image', this.selectedFile, this.selectedFile.name);
+    } else if (this.isEditMode && this.product?.image) {
+      formData.append('existingImagePath', this.product.image);
     }
 
     const request$ = this.isEditMode
@@ -99,16 +101,16 @@ export class ProductFormComponent {
     });
   }
   onFileSelected(event: any) {
-   const file = event.target.files[0];
-  if (file) {
-    this.productForm.patchValue({ image: file });
-     this.selectedFile = file;
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imagePreview = reader.result as string;
-    };
-    reader.readAsDataURL(file);
+    const file = event.target.files[0];
+    if (file) {
+      this.productForm.patchValue({ image: file });
+      this.selectedFile = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
   }
-}
 
 }
