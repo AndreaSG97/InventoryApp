@@ -1,0 +1,91 @@
+<h1 style="text-align: center;" *ngIf="!isEditMode">Form to add transaccion</h1>
+<h1 style="text-align: center;" *ngIf="isEditMode">Form to edit transaccion</h1>
+<form [formGroup]="transactionForm" (ngSubmit)="onSubmit()" class="container mt-4 needs-validation" novalidate>
+
+    <div class="row g-3">
+        <!-- Fecha -->
+        <div class="col-md-6 form-floating">
+            <input type="date" class="form-control" id="date" formControlName="date" placeholder="Date *" required />
+            <label for="date">Date *</label>
+            <div class="invalid-feedback"
+                *ngIf="transactionForm.get('date')?.touched && transactionForm.get('date')?.invalid">
+                The date is required.
+            </div>
+        </div>
+
+    
+        <div class="col-md-6 form-floating">
+            <select class="form-select" id="transactionType" formControlName="transactionType" required>
+                <option value="" disabled selected>Select type *</option>
+                <option value="purchase">Buys</option>
+                <option value="sale">Sale</option>
+            </select>
+            <label for="transactionType">Transaction type *</label>
+            <div class="invalid-feedback"
+                *ngIf="transactionForm.get('transactionType')?.touched && transactionForm.get('transactionType')?.invalid">
+                The type is required.
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mt-2">
+       
+        <div class="col-md-6 form-floating">
+            <select class="form-select" id="productId" formControlName="productId" (change)="onProductChange()"
+                required>
+                <option value="" disabled selected>Select product *</option>
+                <option *ngFor="let p of products" [value]="p.productID">{{ p.name }}</option>
+            </select>
+            <label for="productId">Product *</label>
+            <div class="invalid-feedback"
+                *ngIf="transactionForm.get('productId')?.touched && transactionForm.get('productId')?.invalid">
+                The product is required.
+            </div>
+        </div>
+
+      
+        <div class="col-md-6 form-floating">
+            <input type="number" class="form-control" id="quantity" formControlName="quantity" placeholder="Quantity *"
+                required />
+            <label for="quantity">Quantity *</label>
+            <div class="invalid-feedback"
+                *ngIf="transactionForm.get('quantity')?.touched && transactionForm.get('quantity')?.invalid">
+                Ingrese una cantidad válida.
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mt-2">
+
+        <div class="col-md-6 form-floating">
+            <input type="number" class="form-control" id="unitPrice" formControlName="unitPrice"
+                placeholder="Unit price *" required />
+            <label for="unitPrice">Unit price *</label>
+            <div class="invalid-feedback"
+                *ngIf="transactionForm.get('unitPrice')?.touched && transactionForm.get('unitPrice')?.invalid">
+                Please enter a valid price.
+            </div>
+        </div>
+
+        
+        <div class="col-md-6 form-floating">
+            <input type="number" class="form-control" id="totalPrice" [value]="totalPrice" placeholder="Total price"
+                formControlName="totalPrice"  />
+            <label for="totalPrice">Total price</label>
+        </div>
+    </div>
+
+    <div class="row g-3 mt-2">
+        
+        <div class="col-md-12 form-floating">
+            <input type="text" class="form-control" id="details" placeholder="Details" formControlName="details" />
+            <label for="details">Details</label>
+        </div>
+    </div>
+
+    <div class="text-end mt-4">
+        <button type="submit" class="btn btn-primary" [disabled]="transactionForm.invalid">Save</button>
+        <a routerLink="/transactions" class="btn btn-outline-secondary ms-2">Cancel</a>
+    </div>
+
+</form>

@@ -1,0 +1,86 @@
+<h1 style="text-align: center;" *ngIf="!isEditMode">Form to add product</h1>
+<h1 style="text-align: center;" *ngIf="isEditMode">Form to edit product</h1>
+<form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="requires-validation container mt-4" novalidate>
+  <div>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="form-floating">
+          <input type="text" id="name" class="form-control" placeholder="Name" formControlName="name" required />
+          <label for="name">Name *</label>
+        </div>
+        <div class="invalid-feedback" *ngIf="productForm.get('name')?.touched && productForm.get('name')?.invalid">
+          Name is required.
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-floating">
+          <input type="text" id="category" class="form-control" placeholder="Category" formControlName="category" />
+          <label for="category">Category</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3 mt-2">
+      <div class="col-md-6">
+        <div class="form-floating">
+          <input type="text" id="description" class="form-control" placeholder="Description"
+            formControlName="description" />
+          <label for="description">Description</label>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div *ngIf="imagePreview">
+          <p>Current image:</p>
+          <img [src]="imagePreview" alt="Current image" width="150" />
+        </div>
+
+
+        <div class="form-group">
+          <label for="imageUpload" class="btn btn-outline-primary">
+            Upload Image
+          </label>
+          <input type="file" id="imageUpload" (change)="onFileSelected($event)" accept="image/*"
+            style="display: none;" />
+          <span *ngIf="selectedFile">{{ selectedFile.name }}</span>
+        </div>
+
+
+
+      </div>
+
+    </div>
+
+    <div class="row g-3 mt-2">
+      <div class="col-md-6">
+        <div class="form-floating">
+          <input type="number" id="price" class="form-control" placeholder="Price" formControlName="price" min="0"
+            required />
+          <label for="price">Price *</label>
+        </div>
+        <div class="invalid-feedback" *ngIf="productForm.get('price')?.touched && productForm.get('price')?.invalid">
+          Please enter a valid price.
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-floating">
+          <input type="number" id="inStock" class="form-control" placeholder="Stock" formControlName="inStock" min="0"
+            required />
+          <label for="inStock">Stock *</label>
+        </div>
+        <div class="valid-feedback">Stock válido.</div>
+        <div class="invalid-feedback"
+          *ngIf="productForm.get('inStock')?.touched && productForm.get('inStock')?.invalid">
+          Enter a valid stock.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-end mt-4">
+    <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid">Save</button>
+    <a routerLink="/products" class="btn btn-outline-secondary ms-2">Cancel</a>
+  </div>
+</form>

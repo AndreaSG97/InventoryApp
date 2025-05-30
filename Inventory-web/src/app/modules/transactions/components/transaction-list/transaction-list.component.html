@@ -1,0 +1,29 @@
+<h1 style="text-align: center;">List of Transaccions</h1>
+<button class="k-button k-button-md k-button-solid k-button-solid-primary mb-3" (click)="onAdd()">
+    ADD TRANSACCION
+</button>
+<kendo-grid [kendoGridBinding]="transactionlist" [pageSize]="pageSize" [skip]="skip" [pageable]="true"
+    (pageChange)="pageChange($event)" [filterable]="true" [height]="350">
+    <kendo-grid-column field="transactionID" title="ID" [width]="40" [filterable]="false">
+    </kendo-grid-column>
+    <kendo-grid-column field="date" title="Date" format="MM/dd/yyyy" filter="date">
+    </kendo-grid-column>
+    <kendo-grid-column field="product.name" title="Product Name"></kendo-grid-column>
+
+    <kendo-grid-column field="product.inStock" title="Stock" filter="numeric"></kendo-grid-column>
+    <kendo-grid-column field="quantity" title="Quantity" filter="numeric"></kendo-grid-column>
+    <kendo-grid-column field="unitPrice" title="Unit Price" filter="numeric"></kendo-grid-column>
+    <kendo-grid-column field="transactionType" title="TransactionType"></kendo-grid-column>
+    <kendo-grid-column
+        title="Accions" [width]="150">
+    <ng-template kendoGridCellTemplate let-dataItem>
+        <button class="k-button k-button-md k-button-solid k-button-solid-primary" (click)="onEdit(dataItem)">
+            EDIT
+        </button>
+        <button class="k-button k-button-md k-button-solid k-button-solid-danger" (click)="onDelete(dataItem)">
+            DELETE
+        </button>
+    </ng-template>
+    </kendo-grid-column>
+
+</kendo-grid>
