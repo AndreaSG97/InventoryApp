@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:
+  service1:
+    image: transactionmanagement
+    build:
+      context: ./transactionManagement
+      dockerfile: Dockerfile
+    ports:
+      - 5100:80
+
+  service2:
+    image: productmanagement
+    build:
+      context: ./productManagement
+      dockerfile: Dockerfile
+    ports:
+      - 5200:80
+    volumes:
+    - ./productManagement/wwwroot/images:/app/wwwroot/images

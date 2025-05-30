@@ -1,0 +1,42 @@
+# === .NET Core / C# ===
+/Inventory-management/productManagement/bin/
+/Inventory-management/transactionManagement/bin/
+/Inventory-management/transactionManagement/obj/
+/Inventory-management/productManagement/obj/
+out/
+*.user
+*.suo
+*.cache
+*.log
+*.vs/
+*.vscode/
+*.DS_Store
+*.sln.docstates
+TestResults/
+**/project.lock.json
+**/project.fragment.lock.json
+**/artifacts/
+**/Migrations/
+*.nupkg
+*.snupkg
+*.publish.xml
+
+# === Angular / Node ===
+/Inventory-web/node_modules/
+/Inventory-web/dist/
+/Inventory-web/.angular/cache/
+/Inventory-web/.env
+
+# === General ===
+*.tmp
+*.temp
+*.bak
+*.swp
+*.sublime-workspace
+*.idea/
+Thumbs.db
+.DS_Store
+
+# === Logs ===
+*.log
+logs/
